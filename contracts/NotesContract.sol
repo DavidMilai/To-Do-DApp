@@ -20,15 +20,13 @@ contract NotesContract {
         notes[noteCount] = Note(noteCount,_title,_description);
         emit NoteCreated(noteCount,_title,_description);
         noteCount++;
-
     }
 
-    function deleteNote(uint256 memory _id) public{
+    function deleteNote(uint256 _id) public{
 
         delete notes[_id];
         emit NoteDeleted(_id);
         noteCount--;
-
     }
 
 
