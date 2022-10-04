@@ -1,7 +1,12 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+      ChangeNotifierProvider(
+      create:(context)=>NotesService(),
+      child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
