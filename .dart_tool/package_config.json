@@ -332,6 +332,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "web_socket_channel",
+      "rootUri": "file:///C:/Users/solutechuser/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/web_socket_channel-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "yaml",
       "rootUri": "file:///C:/Users/solutechuser/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/yaml-3.1.1",
       "packageUri": "lib/",
@@ -344,7 +350,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-10-04T06:18:20.414204Z",
+  "generated": "2022-10-04T07:25:16.813915Z",
   "generator": "pub",
   "generatorVersion": "2.13.0"
 }
