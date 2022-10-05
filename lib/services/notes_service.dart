@@ -11,6 +11,7 @@ import '../models/note_model.dart';
 
 class NotesService extends ChangeNotifier {
   List<Note> allNotes = [];
+  bool isLoading = true;
   late Web3Client web3Client;
   late ContractAbi abiCode;
   late EthereumAddress contractAddress;
@@ -76,6 +77,7 @@ class NotesService extends ChangeNotifier {
         );
       }
     }
+    isLoading = false;
     notifyListeners();
   }
 
@@ -88,6 +90,7 @@ class NotesService extends ChangeNotifier {
         parameters: [title, description],
       ),
     );
+    isLoading = true;
     fetchNotes();
   }
 
