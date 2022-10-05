@@ -1,12 +1,10 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tododapp/services/notes_service.dart';
 
 void main() {
-  runApp(
-      ChangeNotifierProvider(
-      create:(context)=>NotesService(),
-      child: MyApp()));
+  runApp(ChangeNotifierProvider(
+      create: (context) => NotesService(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
