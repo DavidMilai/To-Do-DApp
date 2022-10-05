@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:web3dart/web3dart.dart';
 import 'package:web_socket_channel/io.dart';
@@ -17,7 +17,7 @@ class NotesService extends ChangeNotifier {
   late EthPrivateKey credentials;
   late DeployedContract deployedContract;
   late ContractFunction createNote;
-  late ContractFunction deleteNote;
+  late ContractFunction _deleteNote;
   late ContractFunction notes;
   late ContractFunction noteCount;
 
@@ -46,7 +46,7 @@ class NotesService extends ChangeNotifier {
   Future<void> getDeployedContract() async {
     deployedContract = DeployedContract(abiCode, contractAddress);
     createNote = deployedContract.function('createNote');
-    deleteNote = deployedContract.function('deleteNote');
+    _deleteNote = deployedContract.function('deleteNote');
     notes = deployedContract.function('notes');
     noteCount = deployedContract.function('noteCount');
     await fetchNotes();
@@ -77,6 +77,32 @@ class NotesService extends ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  Future<void> addNote(String title, String description) async {
+    await web3Client.sendTransaction(
+      credentials,
+      Transaction.callContract(
+        contract: deployedContract,
+        function: createNote,
+        parameters: [title, description],
+      ),
+    );
+    fetchNotes();
+  }
+
+  Future<void> deleteNote(int id) async {
+    await web3Client.sendTransaction(
+      credentials,
+      Transaction.callContract(
+        contract: deployedContract,
+        function: _deleteNote,
+        parameters: [BigInt.from(id)],
+      ),
+    );
+    // isLoading = true;
+    notifyListeners();
+    fetchNotes();
   }
 
   Future<void> init() async {
