@@ -26,9 +26,9 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                 print("hello");
               },
               child: ListView.builder(
-                  itemCount: notesService.allNotes.length,
+                  itemCount: notesService.notes.length,
                   itemBuilder: (context, index) {
-                    Note note = notesService.allNotes[index];
+                    Note note = notesService.notes[index];
                     return ListTile(
                         title: Text(note.title),
                         subtitle: Text(note.description),

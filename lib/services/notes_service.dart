@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -10,25 +9,30 @@ import 'package:web_socket_channel/io.dart';
 import '../models/note_model.dart';
 
 class NotesService extends ChangeNotifier {
-  List<Note> allNotes = [];
+  List<Note> notes = [];
   bool isLoading = true;
   late Web3Client web3Client;
   late ContractAbi abiCode;
   late EthereumAddress contractAddress;
-  late EthPrivateKey credentials;
-  late DeployedContract deployedContract;
-  late ContractFunction createNote;
+  late EthPrivateKey _creds;
+
+  late DeployedContract _deployedContract;
+  late ContractFunction _createNote;
   late ContractFunction _deleteNote;
-  late ContractFunction notes;
-  late ContractFunction noteCount;
+  late ContractFunction _notes;
+  late ContractFunction _noteCount;
 
   final String rpcURL = "http://127.0.0.1:7545"; //rpc remote procedure call
   final String wsURL = "ws://127.0.0.1:7545"; //ws web socket url
-  final String privateKey =
+  final String _privatekey =
       "799b644888b1c83a26275e0ce84c18ea50a460386ea07388cd74f60cc467cefa";
 
   NotesService() {
     init();
+  }
+
+  Future<void> getCredentials() async {
+    _creds = EthPrivateKey.fromHex(_privatekey);
   }
 
   Future<void> getABI() async {
@@ -40,35 +44,31 @@ class NotesService extends ChangeNotifier {
         EthereumAddress.fromHex(jsonABI["networks"]["5777"]["address"]);
   }
 
-  Future<void> getCredentials() async {
-    credentials = EthPrivateKey.fromHex(privateKey);
-  }
-
   Future<void> getDeployedContract() async {
-    deployedContract = DeployedContract(abiCode, contractAddress);
-    createNote = deployedContract.function('createNote');
-    _deleteNote = deployedContract.function('deleteNote');
-    notes = deployedContract.function('notes');
-    noteCount = deployedContract.function('noteCount');
+    _deployedContract = DeployedContract(abiCode, contractAddress);
+    _createNote = _deployedContract.function('createNote');
+    _deleteNote = _deployedContract.function('deleteNote');
+    _notes = _deployedContract.function('notes');
+    _noteCount = _deployedContract.function('noteCount');
     await fetchNotes();
   }
 
   Future<void> fetchNotes() async {
     List totalTaskList = await web3Client.call(
-      contract: deployedContract,
-      function: noteCount,
+      contract: _deployedContract,
+      function: _noteCount,
       params: [],
     );
 
     int totalTaskLen = totalTaskList[0].toInt();
-    allNotes.clear();
+    notes.clear();
     for (var i = 0; i < totalTaskLen; i++) {
       var temp = await web3Client.call(
-          contract: deployedContract,
-          function: notes,
+          contract: _deployedContract,
+          function: _noteCount,
           params: [BigInt.from(i)]);
       if (temp[1] != "") {
-        allNotes.add(
+        notes.add(
           Note(
             id: (temp[0] as BigInt).toInt(),
             title: temp[1],
@@ -83,10 +83,10 @@ class NotesService extends ChangeNotifier {
 
   Future<void> addNote(String title, String description) async {
     await web3Client.sendTransaction(
-      credentials,
+      _creds,
       Transaction.callContract(
-        contract: deployedContract,
-        function: createNote,
+        contract: _deployedContract,
+        function: _createNote,
         parameters: [title, description],
       ),
     );
@@ -96,9 +96,9 @@ class NotesService extends ChangeNotifier {
 
   Future<void> deleteNote(int id) async {
     await web3Client.sendTransaction(
-      credentials,
+      _creds,
       Transaction.callContract(
-        contract: deployedContract,
+        contract: _deployedContract,
         function: _deleteNote,
         parameters: [BigInt.from(id)],
       ),
