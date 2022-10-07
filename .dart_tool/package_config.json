@@ -159,9 +159,9 @@
     },
     {
       "name": "http",
-      "rootUri": "file:///C:/Users/solutechuser/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/http-0.13.3",
+      "rootUri": "file:///C:/Users/solutechuser/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/http-0.13.5",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.14"
     },
     {
       "name": "http_parser",
@@ -350,7 +350,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-10-07T09:39:14.198700Z",
+  "generated": "2022-10-07T09:54:21.747701Z",
   "generator": "pub",
   "generatorVersion": "2.14.0"
 }
