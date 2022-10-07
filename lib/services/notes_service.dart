@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,8 +23,12 @@ class NotesService extends ChangeNotifier {
   late ContractFunction _notes;
   late ContractFunction _noteCount;
 
-  final String rpcURL = "http://127.0.0.1:7545"; //rpc remote procedure call
-  final String wsURL = "ws://127.0.0.1:7545"; //ws web socket url
+  final String rpcURL = Platform.isAndroid
+      ? "http://10.0.2.2:7545"
+      : "http://127.0.0.1:7545"; //rpc remote procedure call
+  final String wsURL = Platform.isAndroid
+      ? "http://10.0.2.2:7545"
+      : "ws://127.0.0.1:7545"; //ws web socket url
   final String _privatekey =
       "799b644888b1c83a26275e0ce84c18ea50a460386ea07388cd74f60cc467cefa";
 
@@ -56,7 +61,7 @@ class NotesService extends ChangeNotifier {
   Future<void> fetchNotes() async {
     List totalTaskList = await web3Client.call(
       contract: _deployedContract,
-      function: _noteCount,
+      function: _notes,
       params: [],
     );
 
