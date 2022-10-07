@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
-import 'package:tododapp/models/note_model.dart';
 import 'package:tododapp/services/notes_service.dart';
 
 class AllNotesScreen extends StatefulWidget {
@@ -15,28 +14,43 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
   final TextEditingController descriptionController = TextEditingController();
 
   @override
+  void dispose() {
+    super.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var notesService = context.watch<NotesService>();
+    var notesServices = context.watch<NotesServices>();
     return Scaffold(
-      appBar: AppBar(title: Text("All notes")),
-      body: notesService.isLoading
-          ? Center(child: CircularProgressIndicator())
+      appBar: AppBar(
+        title: const Text('Notes'),
+      ),
+      body: notesServices.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
           : RefreshIndicator(
-              onRefresh: () async {
-                print("hello");
-              },
+              onRefresh: () async {},
               child: ListView.builder(
-                  itemCount: notesService.notes.length,
-                  itemBuilder: (context, index) {
-                    Note note = notesService.notes[index];
-                    return ListTile(
-                        title: Text(note.title),
-                        subtitle: Text(note.description),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
-                          onPressed: () => notesService.deleteNote(note.id),
-                        ));
-                  }),
+                itemCount: notesServices.notes.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(notesServices.notes[index].title),
+                    subtitle: Text(notesServices.notes[index].description),
+                    trailing: IconButton(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        notesServices.deleteNote(notesServices.notes[index].id);
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -66,7 +80,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      notesService.addNote(
+                      notesServices.addNote(
                         titleController.text,
                         descriptionController.text,
                       );

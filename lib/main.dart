@@ -5,7 +5,7 @@ import 'package:tododapp/services/notes_service.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
-      create: (context) => NotesService(), child: MyApp()));
+      create: (context) => NotesServices(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
