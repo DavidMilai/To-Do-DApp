@@ -122,6 +122,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "dio",
+      "rootUri": "file:///C:/Users/solutechuser/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/dio-4.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "fake_async",
       "rootUri": "file:///C:/Users/solutechuser/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/fake_async-1.2.0",
       "packageUri": "lib/",
@@ -350,7 +356,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-10-07T09:54:21.747701Z",
+  "generated": "2022-10-07T10:21:25.771097Z",
   "generator": "pub",
   "generatorVersion": "2.14.0"
 }
